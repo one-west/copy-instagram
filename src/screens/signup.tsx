@@ -123,7 +123,7 @@ export default () => {
       await updateProfile(credential.user, {
         displayName: nickName, // displayName: firebase user profile에 저장할 name
       });
-      alert("가입완료");
+      navi("/");
       // b-3. 서버에서 가입 진행
       // b-4. 가입완료 > 1. 로그인화면 or 2. 자동 로그인
     } catch (error) {
