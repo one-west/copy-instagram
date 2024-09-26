@@ -1,28 +1,38 @@
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import styled from "styled-components";
 import { auth } from "../firebaseConfig";
 import { FirebaseError } from "firebase/app";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import EmailSignUpButton from "../component/EmailSignUpButton";
+import GoogleSignUpButton from "../component/GoogleSignUpButton";
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: center;
   align-items: center;
-  width: 80%;
-  max-width: 400px;
+  width: 100%;
   padding: 30px;
+
+  /* 반응형 그리드 개수 변경 */
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 25px;
   font-weight: bold;
+  margin-bottom: 20px;
 `;
 
 // 로고 이미지
 const LogoImg = styled.img`
-  width: 300px;
-  height: 150px;
+  width: 100%;
+  max-width: 350px;
+  height: auto;
 `;
 
 // Text 입력 필드 구역
@@ -51,13 +61,13 @@ const SubTitle = styled.p`
   font-size: 10px;
 `;
 
-const SignupBtn = styled.div`
+const SignInBtn = styled.div`
   padding: 10px 20px;
   border-radius: 20px;
-  background-color: #4387c2;
+  background-color: #ffffff;
   font-size: 10px;
   font-weight: 600;
-  color: white;
+  color: black;
   display: flex;
   justify-content: center;
   cursor: pointer;
@@ -77,6 +87,9 @@ const ErrorMsg = styled.div`
 const Guide = styled.span`
   font-size: 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 
   a {
     color: #4387c2;
@@ -86,8 +99,23 @@ const Guide = styled.span`
   }
 `;
 
+const Divider = styled.p`
+  color: #afafaf;
+  align-items: center;
+  display: flex;
+  font-size: 10px;
+  margin: 10px 0px;
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid white;
+    margin: 0px 5px;
+  }
+`;
+
 export default () => {
-  // 회원가입을 위한 Process 작성
+  // 로그인을 위한 Process 작성
   // Hook 생성 : 페이지 이동을 위한
   const navi = useNavigate();
 
@@ -119,7 +147,7 @@ export default () => {
     }
   };
 
-  // C. 가입버튼을 누른 경우, 입력한 회원정보를 SERVER에 전달 > 회원가입 처리
+  // C. 가입버튼을 누른 경우, 입력한 회원정보를 SERVER에 전달 > 로그인 처리
   const onSubmit = async () => {
     console.log("가입하기 버튼 눌림");
     // A. 방어코드 -- ex)입력을 안한 경우
@@ -127,16 +155,15 @@ export default () => {
     if (email === "" || password === "") {
       alert("회원 정보를 모두 입력해주세요");
     }
-    // B. 회원가입 프로세스 진행
+    // B. 로그인 프로세스 진행
     try {
       // b-1. 로딩 start
       setLoading(true);
       // b-2. 회원정보(닉네임, 이메일, 암호)를 모아서 서버(Firebase)에 전달(API)
-      // 가입완료까지 기다리기(비동기)
-      const credential = await createUserWithEmailAndPassword(auth, email, password);
+      // 로그인까지 기다리기(비동기)
+      const credential = await signInWithEmailAndPassword(auth, email, password);
       navi("/");
-      // b-3. 서버에서 가입 진행
-      // b-4. 가입완료 > 1. 로그인화면 or 2. 자동 로그인
+      // b-3. 로그인 완료 > 1. 로그인화면 or 2. 자동 로그인
     } catch (error) {
       // C. 예외적인 경우(Error) 중복계정, 잘못된 계정
       // c-0. 만일 Firebase 관련 Error인 경우에만
@@ -155,17 +182,18 @@ export default () => {
   return (
     <Container>
       <LogoImg src={`${process.env.PUBLIC_URL}/DaelimX_Title.png`} />
-      <Title>SignIn Page.</Title>
       <Form>
+        <Title>자, 이제 시작이야</Title>
         <SubTitle>이메일*</SubTitle>
         <Input name="email" onChange={onChange} type="email" placeholder="예) Daelim@email.daelim.ac.kr" />
         <SubTitle>비밀번호*</SubTitle>
         <Input name="password" onChange={onChange} type="password" placeholder="예) 6자리 이상 입력하세요" />
-        <SignupBtn onClick={onSubmit}>{loading ? "로딩중..." : "가입하기"}</SignupBtn>
-        <ErrorMsg>{errorMsgGroups[error]}</ErrorMsg>
+        <SignInBtn onClick={onSubmit}>{loading ? "로딩중..." : "가입하기"}</SignInBtn>
+        {error !== "" && <ErrorMsg>{errorMsgGroups[error]}</ErrorMsg>}
+        <Divider>또는</Divider>
         <Guide>
-          계정이 없으신가요?
-          <Link to={"/signup"}>회원가입</Link>
+          <EmailSignUpButton />
+          <GoogleSignUpButton />
         </Guide>
       </Form>
     </Container>
@@ -180,4 +208,5 @@ const errorMsgGroups: errorMsgGroupType = {
   "auth/email-already-in-use": "이미 존재하는 회원입니다.",
   "auth/week-password": "비밀번호를 6자리 이상 입력하세요",
   "auth/invalid-email": "잘못된 이메일입니다.",
+  "auth/invalid-credential": "로그인 정보가 올바르지 않습니다.",
 };
