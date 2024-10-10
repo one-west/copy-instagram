@@ -1,12 +1,19 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import { auth } from "../firebaseConfig";
 
 const Container = styled.div``;
 const Title = styled.h1``;
 
 export default () => {
-    return <Container>
-        <Title>Home Page.</Title>
-    </Container>
-}
+  // Firebase Authentication API를 이용한 로그아웃
+  const signOut = async () => {
+    await auth.signOut();
+  };
 
-// 참조해서 
+  return (
+    <Container>
+      <Title>Home Page.</Title>
+      <button onClick={signOut}>로그아웃</button>
+    </Container>
+  );
+};

@@ -12,12 +12,12 @@ const Container = styled.div`
   grid-template-columns: repeat(2, 1fr);
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 80%;
+  max-width: 500px;
   padding: 30px;
 
   /* 반응형 그리드 개수 변경 */
-
-  @media (max-width: 600px) {
+  @media (max-width: 500px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -44,15 +44,15 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-  // Text 입력 칸
-  border-radius: 10px;
+  border-radius: 5px;
   border: none;
   padding: 5px 20px;
-  &::placeholder {
+  & ::placeholder {
     font-size: 10px;
   }
-  &[type="submit"] {
+  & [type="submit"] {
     cursor: pointer;
+    margin-top: 20px;
   }
 `;
 
@@ -104,7 +104,7 @@ const Divider = styled.p`
   align-items: center;
   display: flex;
   font-size: 10px;
-  margin: 10px 0px;
+  margin: 12px 0px;
   &::before,
   &::after {
     content: "";
