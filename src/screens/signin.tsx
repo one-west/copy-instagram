@@ -12,8 +12,9 @@ const Container = styled.div`
   grid-template-columns: repeat(2, 1fr);
   justify-content: center;
   align-items: center;
-  width: 80%;
-  max-width: 500px;
+  width: 100%;
+  gap: 10%;
+  max-width: 600px;
   padding: 30px;
 
   /* 반응형 그리드 개수 변경 */
