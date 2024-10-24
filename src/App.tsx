@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import Home from "./screens/home";
 import Profiler from "./screens/profiler";
@@ -9,12 +9,18 @@ import reset from "styled-reset";
 import { auth } from "./firebaseConfig";
 import LoadingScreen from "./screens/loading-screen";
 import ProtectedRouter from "./component/protected-router";
+import Layout from "./screens/layout";
 
 // React-Router-Dom 을 활용해 사이트의 Page를 관리
 // - Page : home, profile, signin, signup
 const router = createBrowserRouter([
   {
     path: "/",
+    element: (
+      <ProtectedRouter>
+        <Layout />
+      </ProtectedRouter>
+    ),
     children: [
       {
         // home
@@ -35,6 +41,15 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    // home
+    path: "/home",
+    element: (
+      <ProtectedRouter>
+        <Home />
+      </ProtectedRouter>
+    ),
   },
   {
     // signin
