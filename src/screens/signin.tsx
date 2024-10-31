@@ -115,6 +115,7 @@ const Divider = styled.p`
   }
 `;
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   // 로그인을 위한 Process 작성
   // Hook 생성 : 페이지 이동을 위한
@@ -155,6 +156,7 @@ export default () => {
     if (loading) return;
     if (email === "" || password === "") {
       alert("회원 정보를 모두 입력해주세요");
+      return;
     }
     // B. 로그인 프로세스 진행
     try {
@@ -178,7 +180,11 @@ export default () => {
       setLoading(false);
     }
   };
-
+  
+  const keydownEnter = (e: React.KeyboardEvent) => {
+    e.key === "Enter" && onSubmit();
+  }
+  
   // Page Design Rndering
   return (
     <Container>
@@ -186,9 +192,9 @@ export default () => {
       <Form>
         <Title>자, 이제 시작이야</Title>
         <SubTitle>이메일*</SubTitle>
-        <Input name="email" onChange={onChange} type="email" placeholder="예) Daelim@email.daelim.ac.kr" />
+        <Input name="email" onKeyDown={keydownEnter} onChange={onChange} type="email" placeholder="예) Daelim@email.daelim.ac.kr" />
         <SubTitle>비밀번호*</SubTitle>
-        <Input name="password" onChange={onChange} type="password" placeholder="예) 6자리 이상 입력하세요" />
+        <Input name="password" onKeyDown={keydownEnter} onChange={onChange} type="password" placeholder="예) 6자리 이상 입력하세요" />
         <SignInBtn onClick={onSubmit}>{loading ? "로딩중..." : "가입하기"}</SignInBtn>
         {error !== "" && <ErrorMsg>{errorMsgGroups[error]}</ErrorMsg>}
         <Divider>또는</Divider>
