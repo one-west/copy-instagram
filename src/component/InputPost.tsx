@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import styled from "styled-components";
-import { auth } from "../firebaseConfig";
+import { auth, firestore } from "../firebaseConfig";
+import { addDoc, collection } from "firebase/firestore";
 
 const Form = styled.form`
   display: flex;
@@ -100,23 +101,44 @@ export default () => {
   };
 
   // 3. Server(Firebase)에 최종 저장
-  const onSubmit = () => {
-    // 0. Firebase의 Settings
-    // 1. 제출 정보(text, photo, user)
-    // ---- Loading 시작 ----
-    // 2. Firebase에 특정 위치에 제출
-    // ㄴ user의 닉네임
-    // ㄴ user의 id값
-    // ㄴ 포스트 작성 시간
-    // ㄴ 작성한 Post text
-    // 첨부한 Photo
-    // ---- Error 예외 처리 ----
-    // ---- Loading 종료 ----
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // 제출 시, 화면 새로 고침 방지
+    e.preventDefault();
+
+    try {
+      // 0. Firebase의 Settings
+      // 1. 제출 정보(text, photo, user)
+      const user = auth.currentUser;
+
+      // 1-b. [방어코드] : 제출정보를 기반으로 조건에 맞지 않으면
+      if (user === null || post === "") {
+        return;
+      }
+
+      // ---- Loading 시작 ----
+      // 2. Firebase에 posts 위치에 제출
+      const myPost = {
+        displayName: user.displayName,
+        uid: user.uid,
+        create_at: Date.now(),
+        post: post,
+        photo: file?.name, // 나중에 Storage에 Upload
+      };
+
+      // 2-1. firebase DB 에 myPost 업로드
+      const path = collection(firestore, "posts");
+      await addDoc(path, myPost);
+    } catch (error) {
+      // ---- Error 예외 처리 ----
+      console.warn(error);
+    } finally {
+      // ---- Loading 종료 ----
+    }
   };
 
   // Page Design Redering
   return (
-    <Form>
+    <Form onSubmit={(e) => onSubmit(e)}>
       <ProfileArea></ProfileArea>
       <PostArea>
         <TextArea
@@ -134,7 +156,7 @@ export default () => {
             type="file"
             accept="image/*"
           />
-          <SubmitButtom type="submit" onSubmit={onSubmit} />
+          <SubmitButtom type="submit" />
         </BottomMenu>
       </PostArea>
     </Form>
