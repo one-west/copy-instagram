@@ -1,29 +1,33 @@
 // 나의 게시글을 작성하고, 게시글을 업로드
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import { auth, firestore } from "../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
 
 const Form = styled.form`
   display: flex;
+  border: 1px solid #333333;
+  padding: 20px 10px;
+  gap: 10px;
 `;
 
 const ProfileArea = styled.div`
   background-color: tomato;
   width: 50px;
-  height: 50px;
+  height: 50pxzoomit;
 `;
 
 const PostArea = styled.div`
-  background-color: yellowgreen;
+  flex: 1;
 `;
 
 const TextArea = styled.textarea`
-  width: 100%;
   resize: none;
   background-color: #000;
   color: #fff;
+  width: 100%;
+  font-weight: bold;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border: none;
@@ -34,6 +38,8 @@ const TextArea = styled.textarea`
 
 const BottomMenu = styled.div`
   display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
 `;
 
 const AttachPhotoButton = styled.label`
@@ -71,9 +77,12 @@ const SubmitButtom = styled.input`
 export default () => {
   // Page Logic Process
   // 내가 쓴 게시글 내용 Text
-  // 내가 업로드한 이미지 File
   const [post, setPost] = useState<string>();
+  // 내가 업로드한 이미지 File
   const [file, setFile] = useState<File>();
+
+  // TextArea Reference 참조 Hook
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   // 1. 작성한 게시글 텍스트 state에 저장
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -84,6 +93,16 @@ export default () => {
 
     // 3. state(post)에 저장괸 값을 화면에 출력한다.
     // ㄴ <TextArea> 에서 value={}과 연결
+
+    // 4. ref를 통해서, 자동 높이 조절
+    // 4-a. ref 안에 값이 잘 들어갔는지 확인
+    if (textAreaRef && textAreaRef.current) {
+      // 4-b. 높이 초기화
+      textAreaRef.current.style.height = "auto";
+      // 4-c. 스크롤 높이만큼 Textarea 높이 조절
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px
+      `;
+    }
   };
 
   // 2, 업로드한 이미지를 State에 저장
@@ -115,7 +134,6 @@ export default () => {
         return;
       }
 
-      // ---- Loading 시작 ----
       // 2. Firebase에 posts 위치에 제출
       const myPost = {
         displayName: user.displayName,
@@ -142,6 +160,7 @@ export default () => {
       <ProfileArea></ProfileArea>
       <PostArea>
         <TextArea
+          ref={textAreaRef}
           onChange={(e) => onChange(e)}
           placeholder="무슨 일이 일어났나요?"
           value={post}
