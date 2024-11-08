@@ -80,6 +80,8 @@ export default () => {
   const [post, setPost] = useState<string>();
   // 내가 업로드한 이미지 File
   const [file, setFile] = useState<File>();
+  // 로딩 상태
+  const [loading, setLoading] = useState(false);
 
   // TextArea Reference 참조 Hook
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -123,14 +125,16 @@ export default () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     // 제출 시, 화면 새로 고침 방지
     e.preventDefault();
-
+    // 로딩 시작
+    setLoading(true);
     try {
       // 0. Firebase의 Settings
       // 1. 제출 정보(text, photo, user)
       const user = auth.currentUser;
 
       // 1-b. [방어코드] : 제출정보를 기반으로 조건에 맞지 않으면
-      if (user === null || post === "") {
+      if (user === null || post === "" || !post || loading) {
+        alert("제출할 내용을 모두 입력하세요.");
         return;
       }
 
@@ -151,6 +155,7 @@ export default () => {
       console.warn(error);
     } finally {
       // ---- Loading 종료 ----
+      setLoading(false);
     }
   };
 
@@ -164,6 +169,7 @@ export default () => {
           onChange={(e) => onChange(e)}
           placeholder="무슨 일이 일어났나요?"
           value={post}
+          rows={5}
         ></TextArea>
         <BottomMenu>
           <AttachPhotoButton htmlFor="photo">
@@ -175,7 +181,10 @@ export default () => {
             type="file"
             accept="image/*"
           />
-          <SubmitButtom type="submit" />
+          <SubmitButtom
+            type="submit"
+            value={loading ? "제출 중" : "제출하기"}
+          />
         </BottomMenu>
       </PostArea>
     </Form>
