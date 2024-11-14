@@ -28,8 +28,8 @@ const TextArea = styled.textarea`
   color: #fff;
   width: 100%;
   font-weight: bold;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
   border: none;
   &:focus {
     outline-color: #118bf0;
@@ -140,11 +140,11 @@ export default () => {
 
       // 2. Firebase에 posts 위치에 제출
       const myPost = {
-        displayName: user.displayName,
-        uid: user.uid,
-        create_at: Date.now(),
+        nickname: user.displayName,
+        userId: user.uid,
+        createdAt: Date.now(),
         post: post,
-        photo: file?.name, // 나중에 Storage에 Upload
+        photo: file?.name ? file?.name : "", // 나중에 Storage에 Upload
       };
 
       // 2-1. firebase DB 에 myPost 업로드
@@ -156,6 +156,7 @@ export default () => {
     } finally {
       // ---- Loading 종료 ----
       setLoading(false);
+      window.location.reload();
     }
   };
 
@@ -172,19 +173,9 @@ export default () => {
           rows={5}
         ></TextArea>
         <BottomMenu>
-          <AttachPhotoButton htmlFor="photo">
-            {file ? "사진 추가됨" : "사진 업로드"}
-          </AttachPhotoButton>
-          <AttachPhotoInput
-            onChange={(e) => onChangeFile(e)}
-            id="photo"
-            type="file"
-            accept="image/*"
-          />
-          <SubmitButtom
-            type="submit"
-            value={loading ? "제출 중" : "제출하기"}
-          />
+          <AttachPhotoButton htmlFor="photo">{file ? "사진 추가됨" : "사진 업로드"}</AttachPhotoButton>
+          <AttachPhotoInput onChange={(e) => onChangeFile(e)} id="photo" type="file" accept="image/*" />
+          <SubmitButtom type="submit" value={loading ? "제출 중" : "제출하기"} />
         </BottomMenu>
       </PostArea>
     </Form>

@@ -1,5 +1,5 @@
 /** 게시글 타입 */
-export type PostType = {
+export type TPost = {
   post: string;
   nickname: string;
   userId: string;
