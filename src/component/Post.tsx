@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { TPost } from "../types/post.type";
 import { auth } from "../firebaseConfig";
 import moment from "moment";
+import Item from "./Post-ItemMenu";
 // import "moment/locale/ko";
 
 const Container = styled.div`
@@ -27,6 +28,7 @@ const Content = styled.div`
   display: flex;
   gap: 5px;
   flex-direction: column;
+  width: 100%;
 `;
 const UserInfo = styled.div`
   display: flex;
@@ -47,27 +49,35 @@ const CreateTime = styled.div`
   font-size: 11px;
   color: darkgray;
 `;
-const Footer = styled.footer``;
-const ItemBox = styled.div``;
-const ItemIcon = styled.span``;
-const ItemText = styled.span``;
-
-type TItem = { type: ItemIcon; num: number };
-type ItemIcon = "like" | "view" | "comment";
-
-const Item = ({ type, num }: TItem) => {
-  return (
-    <ItemBox>
-      <ItemIcon>{type}</ItemIcon>
-      <ItemText>{num}</ItemText>
-    </ItemBox>
-  );
-};
+const Footer = styled.footer`
+  display: flex;
+  gap: 8px;
+  margin: 10px 0px;
+`;
+const Topbar = styled.div`
+  display: flex;
+  gap: 5px;
+  justify-content: space-between;
+`;
+const DeleteBtn = styled.button`
+  cursor: pointer;
+  font-size: 10px;
+`;
 
 // 기본 프로필 이미지
 const defaultProfileImg = "https://th.bing.com/th/id/OIP.tvaMwK3QuFxhTYg4PSNNVAHaHa?rs=1&pid=ImgDetMain";
 
 export default function Post({ post, userId, createdAt, nickname, photoUrl }: TPost) {
+  const onDelete = () => {
+    const isOk = window.confirm("삭제하시겠습니까?");
+
+    if (isOk) {
+      // Firebase에서 해당 post 삭제
+      // 1. 내가 작성한 게시글인가?
+      // 2. 특정 게시글 ID를 통해 Firebase에서 doc 삭제
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -75,10 +85,13 @@ export default function Post({ post, userId, createdAt, nickname, photoUrl }: TP
           <ProfileImg src={photoUrl || defaultProfileImg} />
         </ProfileArea>
         <Content>
-          <UserInfo>
-            <UserName>{nickname}</UserName>
-            {auth.currentUser && <UserEmail>{auth.currentUser.email}</UserEmail>}
-          </UserInfo>
+          <Topbar>
+            <UserInfo>
+              <UserName>{nickname}</UserName>
+              {auth.currentUser && <UserEmail>{auth.currentUser.email}</UserEmail>}
+            </UserInfo>
+            <DeleteBtn onClick={(e) => onDelete()}>삭제</DeleteBtn>
+          </Topbar>
           <PostText>{post}</PostText>
           <CreateTime>{moment(createdAt).fromNow()}</CreateTime>
         </Content>

@@ -156,7 +156,6 @@ export default () => {
     } finally {
       // ---- Loading 종료 ----
       setLoading(false);
-      window.location.reload();
     }
   };
 
