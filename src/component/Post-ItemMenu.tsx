@@ -1,6 +1,10 @@
 // 게시글 정보로부터 특정 아이콘 메뉴들을 표시
 // - 댓글 수, 조회수, 좋아요 수
 import styled from "styled-components";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { firestore } from "../firebaseConfig";
+import { TPost } from "../types/post.type";
+import { useState } from "react";
 
 const ItemBox = styled.div`
   display: flex;
@@ -11,15 +15,16 @@ const ItemBox = styled.div`
     width: 15px;
     height: 13px;
   }
+  cursor: pointer;
 `;
 
 const ItemIcon = styled.span``;
 const ItemText = styled.span``;
 
 type ItemIcon = "like" | "view" | "comment";
-type TItem = { type: ItemIcon; num: number };
+type TItem = { type: ItemIcon; num: number; id: string };
 
-const Item = ({ type, num }: TItem) => {
+const Item = ({ type, num, id }: TItem) => {
   // Logic
   // 1. type에 따라 icon 그림을 보여준다.
   const icon = () => {
@@ -81,10 +86,27 @@ const Item = ({ type, num }: TItem) => {
     }
   };
   // 2. (도전)firebase에 저장된 각 메뉴의 count를 num에 보여준다.
+  const onCountChange = async () => {
+    try {
+      // firebase에서 postId로 데이터 가져오기
+      const path = doc(firestore, "posts", id);
+      const snapshot = await getDoc(path);
 
+      if (!snapshot.exists()) {
+        throw new Error("Document does not exist!");
+      }
+
+      const { views } = snapshot.data() as TPost;
+      const currentData = views || 0;
+
+      await updateDoc(path, { views: currentData + 1 });
+    } catch (error) {
+      console.error("Error updating Firestore:", error);
+    }
+  };
   // Design Rendering
   return (
-    <ItemBox>
+    <ItemBox onClick={() => onCountChange()}>
       <ItemIcon>{icon()}</ItemIcon>
       <ItemText>{num}</ItemText>
     </ItemBox>

@@ -76,6 +76,10 @@ const SubmitButtom = styled.input`
 
 export default () => {
   // Page Logic Process
+  // 내가 쓴 게시글 조회수
+  const [views, setViews] = useState<number>(0);
+  // 내가 쓴 게시글 좋아요수
+  const [likes, setlikes] = useState<number>(0);
   // 내가 쓴 게시글 내용 Text
   const [post, setPost] = useState<string>();
   // 내가 업로드한 이미지 File
@@ -92,7 +96,6 @@ export default () => {
     // 2. value 값을 state(post)에 저장한다.
     const { value } = event.target;
     setPost(value);
-
     // 3. state(post)에 저장괸 값을 화면에 출력한다.
     // ㄴ <TextArea> 에서 value={}과 연결
 
@@ -145,6 +148,8 @@ export default () => {
         createdAt: Date.now(),
         post: post,
         photo: file?.name ? file?.name : "", // 나중에 Storage에 Upload
+        views: views,
+        likes: likes,
       };
 
       // 2-1. firebase DB 에 myPost 업로드

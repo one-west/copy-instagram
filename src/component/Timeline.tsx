@@ -23,9 +23,9 @@ export default function Timeline() {
     // 3. 가져온 Doc들 Timeline에 쓸 수 있도록 가공
     const timelinePosts = snapshot.docs.map((doc) => {
       // 3-1. doc 안에서 필요한 데이터를 뽑아온다.
-      const { post, userId, nickname, createdAt } = doc.data() as TPost;
+      const { post, userId, nickname, createdAt, views, likes } = doc.data() as TPost;
       // 3-2. 뽑아온 데이터를 반환한다.
-      return { post, userId, nickname, createdAt, id: doc.id };
+      return { post, userId, nickname, createdAt, id: doc.id, views, likes };
       // ㄴ 구조체(Structure)
     });
 
@@ -52,7 +52,7 @@ export default function Timeline() {
         // 4-1. 최신 게시글 정보
         const timelinePosts = snapshot.docs.map((doc) => {
           // 3. Query를 통해 받아온 게시글 정보 가공
-          const { post, userId, nickname, createdAt } = doc.data() as TPost;
+          const { post, userId, nickname, createdAt, likes, views } = doc.data() as TPost;
           // 3-2. 가공된 데이터를 State로 저장
           return {
             createdAt,
@@ -60,6 +60,8 @@ export default function Timeline() {
             post,
             userId,
             id: doc.id,
+            likes,
+            views,
           };
         });
         // 4-2. 최신 게시글 정보 State에 저장

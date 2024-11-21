@@ -5,4 +5,7 @@ export type TPost = {
   userId: string;
   createdAt: number;
   photoUrl?: string;
+  views: number;
+  likes: number;
+  id: string;
 };

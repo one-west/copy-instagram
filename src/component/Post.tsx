@@ -67,7 +67,7 @@ const DeleteBtn = styled.button`
 // 기본 프로필 이미지
 const defaultProfileImg = "https://th.bing.com/th/id/OIP.tvaMwK3QuFxhTYg4PSNNVAHaHa?rs=1&pid=ImgDetMain";
 
-export default function Post({ post, userId, createdAt, nickname, photoUrl }: TPost) {
+export default function Post({ post, userId, createdAt, nickname, photoUrl, likes, views, id }: TPost) {
   const onDelete = () => {
     const isOk = window.confirm("삭제하시겠습니까?");
 
@@ -97,9 +97,9 @@ export default function Post({ post, userId, createdAt, nickname, photoUrl }: TP
         </Content>
       </Wrapper>
       <Footer>
-        <Item type="view" num={1} />
-        <Item type="like" num={2} />
-        <Item type="comment" num={3} />
+        <Item type="view" num={views} id={id} />
+        <Item type="like" num={views} id={id} />
+        <Item type="comment" num={views} id={id} />
       </Footer>
     </Container>
   );
