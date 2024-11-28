@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../firebaseConfig";
 import { TPost } from "../types/post.type";
-import { useState } from "react";
 
 const ItemBox = styled.div`
   display: flex;

@@ -47,11 +47,10 @@ const Title = styled.h1``;
 
 export default () => {
   const navi = useNavigate();
-  
+
   // Page Login
   // 로그아웃 함수
   const signOut = async () => {
-
     // + 확인 절차
     const isOk = window.confirm("정말로 로그아웃을 하실 건가요?");
 
@@ -59,7 +58,7 @@ export default () => {
       // 로그아웃
       await auth.signOut();
       // 로그아웃 뒤에 로그인 화면으로 이동
-      navi("/signin")
+      navi("/signin");
     }
   };
 

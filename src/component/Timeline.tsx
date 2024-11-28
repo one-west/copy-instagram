@@ -67,13 +67,14 @@ export default function Timeline() {
         // 4-2. 최신 게시글 정보 State에 저장
         setPosts(timelinePosts);
       });
-      // 6. Timeline 페이지 벗어날 시, 구독 종료
-      return () => {
-        unsubscribe && unsubscribe();
-      };
-    };
 
-    fetchPostsRealtime();
+      fetchPostsRealtime();
+    };
+    
+    // 6. Timeline 페이지 벗어날 시, 구독 종료
+    return () => {
+      unsubscribe && unsubscribe();
+    };
   }, []);
 
   return (

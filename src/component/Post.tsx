@@ -4,9 +4,9 @@
 import styled from "styled-components";
 import { TPost } from "../types/post.type";
 import { auth } from "../firebaseConfig";
-import moment from "moment";
 import Item from "./Post-ItemMenu";
-// import "moment/locale/ko";
+import monent from "moment";
+import "moment/locale/ko";
 
 const Container = styled.div`
   border: 1px solid #333333;
