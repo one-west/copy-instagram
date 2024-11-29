@@ -4,26 +4,31 @@ import styled from "styled-components";
 const Button = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
   justify-content: center;
-  background-color: #36b5ff;
-  padding: 5px 20px;
-  border-radius: 15px;
+  gap: 10px;
+  background-color: #1f92f7;
+  padding: 10px 10px;
+  border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
 `;
-const Title = styled.p``;
+const Title = styled.p`
+  font-size: 0.7rem;
+`;
 const Icon = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
 `;
 
 export default () => {
-  // 회원가입 페이지로 이동 함수
-  const navi = useNavigate();
+  // navigate Hook
+  const navigation = useNavigate();
+
+  // 회원가입 페이지로 이동하는 함수
   const onClick = () => {
-    navi("/signup");
+    navigation("/signup");
   };
+
   return (
     <Button onClick={onClick}>
       <Icon src={`${process.env.PUBLIC_URL}/email-icon.png`} />

@@ -6,38 +6,42 @@ import { FirebaseError } from "firebase/app";
 
 const Button = styled.div`
   display: flex;
-  align-items: center;
-  gap: 10px;
   justify-content: center;
+  align-items: center;
+  gap: 5px;
   background-color: #ffffff;
   color: black;
-  padding: 5px 20px;
-  border-radius: 15px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 1px solid #c0c0c0;
   font-weight: 600;
   cursor: pointer;
 `;
-const Title = styled.div``;
+const Title = styled.p`
+font-size: 0.7rem;
+`;
 const Icon = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
 `;
 
 export default () => {
   // navigate Hook
-  const navi = useNavigate();
+  const navigation = useNavigate();
 
-  // Google 로그인 함수(비동기형) ..with Server(Firebase)
+  // Google 로그인 함수(비동기형) .. with Server(Firebase)
   const onClick = async () => {
     try {
-      // 1. proviver 생성
+      // 1. provider 생성 (Google 로그인 제공자)
       const provider = new GoogleAuthProvider();
       // 2. Firebase 에게 provider & 로그인 정보를 전달
       await signInWithPopup(auth, provider);
       // 3. 로그인 성공, Home 페이지로 이동
-      navi("/");
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        alert(errorMsgGroups[error.code]);
+      navigation("/");
+    } catch (e) {
+      // Firebase 에러인 경우, 알림창
+      if (e instanceof FirebaseError) {
+        alert(e.message);
       }
     }
   };
@@ -45,15 +49,7 @@ export default () => {
   return (
     <Button onClick={onClick}>
       <Icon src={`${process.env.PUBLIC_URL}/google-icon.png`} />
-      <Title>구글 계정으로 가입하기</Title>
+      <Title>Google 계정으로 로그인하기</Title>
     </Button>
   );
-
-  interface errorMsgGroupType {
-    [key: string]: string;
-  }
-
-  const errorMsgGroups: errorMsgGroupType = {
-    "auth/popup-closed-by-user": "팝업 창 종료로 인해 로그인에 실패했습니다.",
-  };
 };

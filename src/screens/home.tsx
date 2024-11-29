@@ -1,20 +1,21 @@
+// home page를 구성
 import styled from "styled-components";
 import { auth } from "../firebaseConfig";
+import InputPost from "../components/InputPost";
+import Timeline from "../components/Timeline";
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 1400px;
+`;
 const Title = styled.h1``;
 
 export default () => {
-  // Firebase Authentication API를 이용한 로그아웃
-  const signOut = async () => {
-    await auth.signOut();
-    window.location.reload();
-  };
-
   return (
     <Container>
-      <Title>Home Page.</Title>
-      <button onClick={signOut}>로그아웃</button>
+      {/* 게시글 작성 Server Upload */}
+      <InputPost />
+      {/* 작성된 게시글을 Server Download */}
+      <Timeline />
     </Container>
   );
 };
