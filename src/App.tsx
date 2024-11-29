@@ -72,6 +72,7 @@ function App() {
 
     // 로딩 끝
     setLoading(false);
+    console.log("Server");
   };
 
   // 페이지가 렌더링될 때 (=접속했을 때) 실행
