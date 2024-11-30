@@ -12,8 +12,10 @@ import { useEffect, useState } from "react";
 
 const Container = styled.div`
   border: 1px solid #353535;
-  padding: 10px 15px;
+  border-radius: 10px;
+  padding: 20px 25px;
   margin: 15px 0px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -21,8 +23,8 @@ const Wrapper = styled.div`
 `;
 const ProfileArea = styled.div``;
 const ProfileImg = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background-color: white;
   margin-right: 5px;
@@ -30,38 +32,39 @@ const ProfileImg = styled.img`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   width: 100%;
 `;
 const UserInfo = styled.div`
   display: flex;
-  gap: 5px;
+  gap: 10px;
   align-items: flex-end;
 `;
 const UserEmail = styled.div`
-  font-size: 11px;
+  font-size: 12px;
   color: #52adf8;
 `;
 const UserName = styled.div`
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
 `;
 const PostText = styled.div`
-  font-size: 15px;
+  font-size: 16px;
 `;
 const PostImage = styled.img`
   max-width: 400px;
-  height: auto;
+  margin-top: 10px;
 `;
 const CreateTime = styled.div`
-  font-size: 10px;
-  color: #575757;
+  font-size: 11px;
+  color: #9e9e9e;
 `;
 
 const Footer = styled.div`
   display: flex;
-  gap: 8px;
-  margin: 10px 0px;
+  gap: 15px;
+  margin-top: 15px;
+  padding-top: 10px;
 `;
 
 const Topbar = styled.div`
@@ -69,10 +72,15 @@ const Topbar = styled.div`
   justify-content: space-between;
 `;
 const DeleteBtn = styled.span`
-  cursor: pointer;
 
+  cursor: pointer;
   svg {
-    width: 18px;
+    width: 20px;
+    color: #d32f2f;
+    transition: color 0.3s ease;
+  }
+  &:hover svg {
+    color: #f44336;
   }
 `;
 

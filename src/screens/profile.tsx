@@ -13,22 +13,28 @@ const Container = styled.div`
 
 const Profile = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  height: 60vh;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+  border: 1px solid #747474;
+  border-radius: 10px;
+  padding: 20px;
 `;
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-left: -5vw;
-  margin-top: 2vw;
+  gap: 10px;
+  justify-content: center;
 `;
 const ProfileEmail = styled.h1`
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 `;
 const ProfileName = styled.h1`
-  font-size: 1rem;
+    font-size: 1.2rem;
+    color: #c5c5c5;
 `;
 
 const ImgBox = styled.div`
@@ -46,12 +52,14 @@ const ProfileImg = styled.img`
   width: 250px;
   height: 250px;
   border-radius: 50%;
-  object-fit: cover; // 이미지 잘라내는 속성
-  background-size: cover;
-  gap: 10;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 3px solid #ddd;
 `;
 const ProfileImgButton = styled.label`
   cursor: pointer;
+  color: #007bff;
+  margin-top: 10px;
 `;
 const ProfileImgInput = styled.input`
   display: none;
@@ -78,6 +86,9 @@ const Description = styled.div`
   border: 1px solid #404040;
   max-width: 32vw;
   padding: 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+
   p {
     margin-bottom: 20px;
     line-height: 30px;

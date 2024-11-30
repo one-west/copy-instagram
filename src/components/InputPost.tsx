@@ -9,63 +9,78 @@ import LoadingScreen from "../screens/loading-screen";
 
 const Form = styled.form`
   display: flex;
-  gap: 10px;
-  border: 1px solid #353535;
-  padding: 20px 10px;
+  gap: 20px;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 30px 20px;
+  background-color: #1a1a1a;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 `;
 const ProfileArea = styled.div`
-  background-color: white;
-  background-size: cover;
-  object-fit: cover; // 이미지 잘라내는 속성
-  width: 50px;
-  max-width: 50px;
-  max-height: 50px;
+  background-color: #f5f5f5;
+  border-radius: 50%;
+  overflow: hidden;
+  width: 60px;
+  height: 60px;
 `;
 const PostArea = styled.div`
   flex: 1;
 `;
 const TextArea = styled.textarea`
   resize: none;
-  background-color: black;
-  color: white;
-  width: 100%;
-  border: none;
-  font-weight: bold;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-    "Helvetica Neue", sans-serif;
+  background-color: #2b2b2b;
+  color: #e0e0e0;
+  width: 98.3%;
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 10px;
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "Roboto", sans-serif;
+
+  transition: border-color 0.3s ease;
   &:focus {
-    outline-color: #118bf0;
+    outline: none;
+    border-color: #1379ff;
+    background-color: #222;
   }
 `;
 const BottomMenu = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  align-items: center;
+  margin-top: 20px;
 `;
 const AttachPhotoButton = styled.label`
-  padding: 5px 20px;
-  background-color: #1379ff;
+  padding: 8px 25px;
+  background-color: #0056b3;
   color: white;
-  border-radius: 5px;
-  font-size: 12px;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: bold;
+
+  transition: background-color 0.3s ease;
   cursor: pointer;
+  &:hover {
+    background-color: #003d80;
+  }
 `;
 const AttachPhotoInput = styled.input`
   display: none;
 `;
 const SubmitButton = styled.input`
-  padding: 5px 20px;
-  border-radius: 5px;
+  padding: 8px 25px;
+  border-radius: 8px;
   border: none;
   background-color: #009255;
   color: white;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 14px;
+
   cursor: pointer;
-  &:hover,
-  ::after {
-    opacity: 0.8;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #006b3f;
   }
 `;
 
