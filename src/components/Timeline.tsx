@@ -2,13 +2,14 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IPost } from "../types/post-type";
-import { Unsubscribe, collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
-import { firestore } from "../firebaseConfig";
+import { Unsubscribe, collection, doc, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
+import { auth, firestore } from "../firebaseConfig";
 import Post from "./Post";
 
 const Container = styled.div``;
 
 export default () => {
+  const user = auth.currentUser;
   // Page Login Process
   const [posts, setPosts] = useState<IPost[]>([]);
 
@@ -52,15 +53,15 @@ export default () => {
     // realtime 으로 서버에서 최신 게시글 갱신
     const fetchPostsRealtime = async () => {
       // 2. SERVER DB에서 최신게시글 가져올 Query
-      const path = collection(firestore, "posts");
+      const postsPath = collection(firestore, "posts");
       const condition = orderBy("createdAt", "desc");
-      const postsQuery = query(path, condition);
+      const postsQuery = query(postsPath, condition);
       // 5. 최신 게시글 상태를 Listener에 구독(연결/연동)
       unsubscribe = await onSnapshot(postsQuery, (snapshot) => {
         // 4-1. 최신 게시글 정보
         const timelinePosts = snapshot.docs.map((doc) => {
           // 3. Query를 통해 받아온 게시글 정보 가공
-          const { post, userId, email, nickname, createdAt, likes, views, comments, photoUrl } = doc.data() as IPost;
+          const { post, userId, email, nickname, createdAt, likes, views, comments, photoUrl } = doc.data() as IPost
           return {
             createdAt,
             nickname,

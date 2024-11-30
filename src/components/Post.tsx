@@ -7,6 +7,8 @@ import { auth, firestore } from "../firebaseConfig";
 import Item from "./Post-ItemMenu";
 import { deleteDoc, doc } from "firebase/firestore";
 import moment from "moment";
+import { fetchProfileImage } from "./uploadFile";
+import { useEffect, useState } from "react";
 
 const Container = styled.div`
   border: 1px solid #353535;
@@ -80,6 +82,16 @@ const defaultProfileImg = "https://cdn-icons-png.flaticon.com/128/4472/4472500.p
 export default ({ id, userId, createdAt, nickname, post, photoUrl, views, likes, comments }: IPost) => {
   // Logic
   const user = auth.currentUser;
+  const [profileImg, setProfileImg] = useState<string | null>(null);
+
+  // Firebase로부터 해당 유저의 정보 가져오기
+  useEffect(() => {
+    fetchProfileImage(userId).then((url) => {
+      if (user) {
+        setProfileImg(url);
+      }
+    });
+  }, []);
 
   const onDelete = async () => {
     const isOK = window.confirm("삭제하시겠습니까?");
@@ -123,7 +135,7 @@ export default ({ id, userId, createdAt, nickname, post, photoUrl, views, likes,
     <Container>
       <Wrapper>
         <ProfileArea>
-          <ProfileImg src={defaultProfileImg} />
+          <ProfileImg src={profileImg || defaultProfileImg} />
         </ProfileArea>
         <Content>
           <Topbar>
